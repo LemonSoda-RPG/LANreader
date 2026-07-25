@@ -11,6 +11,8 @@ final class ArchiveReaderFeatureTests: XCTestCase {
     override func tearDown() {
         UserDefaults.standard.removeObject(forKey: SettingsKey.readDirection)
         UserDefaults.standard.removeObject(forKey: SettingsKey.doublePageLayout)
+        UserDefaults.standard.removeObject(forKey: SettingsKey.pageTurnAnimation)
+        UserDefaults.standard.removeObject(forKey: SettingsKey.pagePreloadCount)
         UserDefaults.standard.removeObject(forKey: SettingsKey.autoPageInterval)
         UserDefaults.standard.removeObject(forKey: SettingsKey.splitWideImage)
         UserDefaults.standard.removeObject(forKey: SettingsKey.splitPiorityLeft)
@@ -62,6 +64,23 @@ final class ArchiveReaderFeatureTests: XCTestCase {
 
         await store.send(.splitWideImageChanged(false)) {
             $0.$splitWideImage.withLock { $0 = false }
+        }
+    }
+
+    @MainActor
+    func testNavigationDisablesAnimationWhenPageTurnAnimationIsOff() async {
+        configureReaderDefaults(pageTurnAnimation: false)
+        var initialState = makeState(pageTurnAnimation: false)
+        initialState.pages = makePageStates(count: 3)
+        let store = makeTestStore(initialState: initialState)
+
+        await store.send(.navigate(.next, source: .tap)) {
+            $0.scrollRequest = makeScrollRequest(
+                id: 0,
+                targetPageIndex: 1,
+                source: .tap,
+                animated: false
+            )
         }
     }
 
@@ -1860,13 +1879,17 @@ private func configureReaderDefaults(
     doublePageLayout: Bool = false,
     autoPageInterval: Double = 5,
     splitWideImage: Bool = false,
-    splitPiorityLeft: Bool = false
+    splitPiorityLeft: Bool = false,
+    pageTurnAnimation: Bool = true,
+    pagePreloadCount: Int = 2
 ) {
     UserDefaults.standard.set(readDirection.rawValue, forKey: SettingsKey.readDirection)
     UserDefaults.standard.set(doublePageLayout, forKey: SettingsKey.doublePageLayout)
     UserDefaults.standard.set(autoPageInterval, forKey: SettingsKey.autoPageInterval)
     UserDefaults.standard.set(splitWideImage, forKey: SettingsKey.splitWideImage)
     UserDefaults.standard.set(splitPiorityLeft, forKey: SettingsKey.splitPiorityLeft)
+    UserDefaults.standard.set(pageTurnAnimation, forKey: SettingsKey.pageTurnAnimation)
+    UserDefaults.standard.set(pagePreloadCount, forKey: SettingsKey.pagePreloadCount)
 }
 
 private func configureVerifiedClient() async throws {
@@ -2118,7 +2141,9 @@ private func makeState(
     allArchives: [ArchiveItem]? = nil,
     readDirection: ReadDirection = .leftRight,
     doublePageLayout: Bool = false,
-    autoPageInterval: Double = 5
+    autoPageInterval: Double = 5,
+    pageTurnAnimation: Bool = true,
+    pagePreloadCount: Int = 2
 ) -> ArchiveReaderFeature.State {
     let archives = allArchives ?? [makeArchive(id: archiveId, progress: progress, isNew: isNew)]
     let state = ArchiveReaderFeature.State(
@@ -2130,6 +2155,8 @@ private func makeState(
     state.$readDirection = SharedReader(value: readDirection.rawValue)
     state.$doublePageLayout = SharedReader(value: doublePageLayout)
     state.$autoPageInterval = SharedReader(value: autoPageInterval)
+    state.$pageTurnAnimation = SharedReader(value: pageTurnAnimation)
+    state.$pagePreloadCount = SharedReader(value: pagePreloadCount)
     return state
 }
 

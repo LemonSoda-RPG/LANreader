@@ -5300,6 +5300,101 @@
         }
       }
     },
+    "settings.read.page.turn.animation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Page turn animation"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ページめくりアニメーション"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "페이지 넘김 애니메이션"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "翻页动画"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "翻頁動畫"
+          }
+        }
+      }
+    },
+    "settings.read.page.preload.pages" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pages to preload" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "先読みするページ数" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "미리 불러올 페이지 수" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "预加载页数" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "預載頁數" } }
+      }
+    },
+    "settings.read.page.preload.pages.none" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "None" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "なし" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "없음" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "不预加载" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "不預載" } }
+      }
+    },
+    "settings.read.page.preload.pages.one" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "1 page" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "1ページ" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "1페이지" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "1页" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "1頁" } }
+      }
+    },
+    "settings.read.page.preload.pages.two" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "2 pages" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "2ページ" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "2페이지" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "2页" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "2頁" } }
+      }
+    },
+    "settings.read.page.preload.pages.three" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "3 pages" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "3ページ" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "3페이지" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "3页" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "3頁" } }
+      }
+    },
+    "settings.read.page.preload.pages.five" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "5 pages" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "5ページ" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "5페이지" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "5页" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "5頁" } }
+      }
+    },
     "settings.read.split.page" : {
       "extractionState" : "manual",
       "localizations" : {

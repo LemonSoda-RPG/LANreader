@@ -13,6 +13,8 @@ import SwiftUI
         @Shared(.appStorage(SettingsKey.splitWideImage)) var splitWideImage = false
         @Shared(.appStorage(SettingsKey.splitPiorityLeft)) var splitPiorityLeft = false
         @Shared(.appStorage(SettingsKey.doublePageLayout)) var doublePageLayout = false
+        @Shared(.appStorage(SettingsKey.pageTurnAnimation)) var pageTurnAnimation = true
+        @Shared(.appStorage(SettingsKey.pagePreloadCount)) var pagePreloadCount = 2
     }
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
@@ -79,6 +81,16 @@ struct ReadSettings: View {
             }
             .padding()
         }
+        Toggle("settings.read.page.turn.animation", isOn: Binding(self.store.$pageTurnAnimation))
+            .padding()
+        Picker("settings.read.page.preload.pages", selection: Binding(self.store.$pagePreloadCount)) {
+            Text("settings.read.page.preload.pages.none").tag(0)
+            Text("settings.read.page.preload.pages.one").tag(1)
+            Text("settings.read.page.preload.pages.two").tag(2)
+            Text("settings.read.page.preload.pages.three").tag(3)
+            Text("settings.read.page.preload.pages.five").tag(5)
+        }
+        .padding()
         Toggle(isOn: Binding(
             get: { self.store.splitWideImage },
             set: { self.store.send(.splitWideImageChanged($0)) }

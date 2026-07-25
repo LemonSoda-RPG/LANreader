@@ -103,6 +103,8 @@ struct SettingsKey {
     static let splitPiorityLeft = "settings:read:split:piorityLeft"
     static let autoPageInterval = "settings:read:auto:page:interval"
     static let doublePageLayout = "settings:read:double:page"
+    static let pageTurnAnimation = "settings:read:page:turn:animation"
+    static let pagePreloadCount = "settings:read:page:preload:count"
 
     static let searchSort = "settings:search:sort"
     static let searchSortCustom = "settings:search:sort:custom"

@@ -306,6 +306,27 @@ class UIPageCollectionController: UIViewController, UICollectionViewDelegate {
         guard pageIndex != lastReportedVisiblePageIndex else { return }
         lastReportedVisiblePageIndex = pageIndex
         store.send(.visiblePageChanged(pageIndex))
+        preloadPages(around: visibleIndex)
+    }
+
+    /// UIKit's prefetch callbacks are not guaranteed for every layout/device. Keep a
+    /// deterministic window around the visible item so slow networks can start the
+    /// next pages before the user reaches them.
+    private func preloadPages(around visibleIndex: Int) {
+        let count = max(store.pagePreloadCount, 0)
+        guard count > 0 else { return }
+        let itemCount = dataSource.snapshot().itemIdentifiers.count
+        guard itemCount > 0 else { return }
+
+        let first = max(0, visibleIndex - count)
+        let last = min(itemCount - 1, visibleIndex + count)
+        for itemIndex in first...last {
+            guard let pageStore = pageStore(at: IndexPath(item: itemIndex, section: 0)),
+                  pageStore.pageMode == .loading else { continue }
+            Task {
+                await pageStore.send(.load(false)).finish()
+            }
+        }
     }
 
     private func currentVisibleItemIndex() -> Int? {
@@ -938,6 +959,7 @@ extension UIPageCollectionController: UICollectionViewDataSourcePrefetching {
                 }
             }
         }
+        preloadPages(around: indexPath.item)
     }
 
     func collectionView(

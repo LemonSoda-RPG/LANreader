@@ -45,6 +45,8 @@ public struct SliderPreviewThumbnailQueueResult: Equatable, Sendable {
         @SharedReader(.appStorage(SettingsKey.splitPiorityLeft)) var piorityLeft = false
         @SharedReader(.appStorage(SettingsKey.autoPageInterval)) var autoPageInterval = 5.0
         @SharedReader(.appStorage(SettingsKey.doublePageLayout)) var doublePageLayout = false
+        @SharedReader(.appStorage(SettingsKey.pageTurnAnimation)) var pageTurnAnimation = true
+        @SharedReader(.appStorage(SettingsKey.pagePreloadCount)) var pagePreloadCount = 2
 
         var currentArchiveId = ""
         var currentPageIndex = 0
@@ -392,7 +394,10 @@ public struct SliderPreviewThumbnailQueueResult: Equatable, Sendable {
                     id: uuid(),
                     targetPageIndex: clampedIndex,
                     source: source,
-                    animated: source != .slider && source != .initialRestore && source != .chapter
+                    animated: state.pageTurnAnimation
+                        && source != .slider
+                        && source != .initialRestore
+                        && source != .chapter
                 )
                 return .none
             case .collectionScrollStarted:
@@ -639,7 +644,7 @@ public struct SliderPreviewThumbnailQueueResult: Equatable, Sendable {
                     id: uuid(),
                     targetPageIndex: targetIndex,
                     source: source,
-                    animated: true
+                    animated: state.pageTurnAnimation
                 )
                 return .none
             case let .scrollRequestHandled(id):

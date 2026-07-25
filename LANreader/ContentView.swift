@@ -73,9 +73,7 @@ import Logging
                 return .none
             case let .queueUrlDownload(url):
                 return .run { send in
-                    var comp = URLComponents(url: url, resolvingAgainstBaseURL: false)!
-                    comp.scheme = "https"
-                    let urlToDownload = try comp.asURL().absoluteString
+                    let urlToDownload = url.absoluteString
                     let response = try await service.queueUrlDownload(downloadUrl: urlToDownload).value
                     if response.success != 1 {
                         await send(.setErrorMessage(String(localized: "error.download.queue")))

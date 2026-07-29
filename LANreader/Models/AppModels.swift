@@ -189,6 +189,13 @@ enum LANraragiServerStore {
         UserDefaults.standard.set(server.apiKey, forKey: SettingsKey.lanraragiApiKey)
     }
 
+    static func clearActive() {
+        UserDefaults.standard.removeObject(forKey: SettingsKey.activeLanraragiServer)
+        UserDefaults.standard.removeObject(forKey: SettingsKey.lanraragiUrl)
+        UserDefaults.standard.removeObject(forKey: SettingsKey.lanraragiApiKey)
+        UserDefaults.standard.set(false, forKey: SettingsKey.serverProgress)
+    }
+
     static func activeID() -> UUID? {
         guard let value = UserDefaults.standard.string(forKey: SettingsKey.activeLanraragiServer) else { return nil }
         return UUID(uuidString: value)

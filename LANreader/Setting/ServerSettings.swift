@@ -120,7 +120,11 @@ struct ServerListSettingsView: View {
             do {
                 _ = try await service.verifyClient(url: server.url, apiKey: server.apiKey)
                 LANraragiServerStore.activate(server)
-                await MainActor.run { activeID = server.id; isActivating = false }
+                await MainActor.run {
+                    servers = LANraragiServerStore.load()
+                    activeID = server.id
+                    isActivating = false
+                }
             } catch {
                 await MainActor.run { errorMessage = error.localizedDescription; isActivating = false }
             }
@@ -130,8 +134,16 @@ struct ServerListSettingsView: View {
     private func delete(_ server: LANraragiServer) {
         let remaining = servers.filter { $0.id != server.id }
         LANraragiServerStore.save(remaining)
-        if server.id == activeID, let replacement = remaining.first {
-            activate(replacement)
+        if server.id == activeID {
+            LANraragiServerStore.clearActive()
+            activeID = nil
+            servers = remaining
+            Task {
+                await service.clearClient()
+                if let replacement = remaining.first {
+                    await MainActor.run { activate(replacement) }
+                }
+            }
         } else {
             reload()
         }

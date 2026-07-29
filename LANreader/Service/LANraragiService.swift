@@ -89,6 +89,13 @@ actor LANraragiService {
         return result.serverInfo
     }
 
+    func clearClient() {
+        self.url = ""
+        self.authInterceptor = AuthInterceptor(apiKey: "")
+        self.session = Session(interceptor: authInterceptor)
+        self.useNewAPI = false
+    }
+
     func checkServerVersionAtStartup() async {
         let storedUrl = UserDefaults.standard.string(forKey: SettingsKey.lanraragiUrl) ?? ""
         let storedApiKey = UserDefaults.standard.string(forKey: SettingsKey.lanraragiApiKey) ?? ""

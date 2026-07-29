@@ -139,6 +139,11 @@ struct ContentView: View {
                     store.send(.showLogin)
                 }
             }
+            .onChange(of: store.lanraragiUrl) { _, newValue in
+                if newValue.isEmpty {
+                    store.send(.showLogin)
+                }
+            }
             .onAppear {
                 if !store.storedPasscode.isEmpty {
                     _ = withTransaction(self.noAnimationTransaction) {

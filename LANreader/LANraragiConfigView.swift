@@ -13,6 +13,7 @@ import Logging
         @Shared(.appStorage(SettingsKey.lanraragiUrl)) var url = ""
         @Shared(.appStorage(SettingsKey.lanraragiApiKey)) var apiKey = ""
 
+        var serverID: UUID?
         var formUrl = ""
         var formKey = ""
 
@@ -60,6 +61,11 @@ import Logging
                     await send(.setErrorMessage(error.localizedDescription))
                 }
             case .saveComplate:
+                LANraragiServerStore.upsert(
+                    id: state.serverID,
+                    url: state.formUrl,
+                    apiKey: state.formKey
+                )
                 state.isVerifying = false
                 state.successVerifed = true
                 return .run { _ in
@@ -74,8 +80,14 @@ import Logging
             case .binding:
                 return .none
             case .setFormValue:
-                state.formUrl = state.url
-                state.formKey = state.apiKey
+                if let serverID = state.serverID,
+                   let server = LANraragiServerStore.load().first(where: { $0.id == serverID }) {
+                    state.formUrl = server.url
+                    state.formKey = server.apiKey
+                } else {
+                    state.formUrl = state.url
+                    state.formKey = state.apiKey
+                }
                 return .none
             case let .setServerProgress(isServerProgress):
                 state.$serverProgress.withLock {

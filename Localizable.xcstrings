@@ -4495,6 +4495,56 @@
         }
       }
     },
+    "server.list.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Servers" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "サーバー" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "서버" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "服务器" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "伺服器" } }
+      }
+    },
+    "server.list.add" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add server" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "サーバーを追加" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "서버 추가" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "添加服务器" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "新增伺服器" } }
+      }
+    },
+    "server.list.delete" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "削除" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "삭제" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "删除" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "刪除" } }
+      }
+    },
+    "server.list.empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No servers" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "サーバーがありません" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "서버 없음" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "暂无服务器" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "沒有伺服器" } }
+      }
+    },
+    "server.list.empty.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add a LANraragi server to get started." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "LANraragiサーバーを追加してください。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "LANraragi 서버를 추가하세요." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "添加一个 LANraragi 服务器即可开始。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "新增 LANraragi 伺服器即可開始。" } }
+      }
+    },
     "settings.host" : {
       "extractionState" : "manual",
       "localizations" : {

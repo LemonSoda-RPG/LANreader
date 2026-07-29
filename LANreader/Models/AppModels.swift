@@ -92,6 +92,8 @@ struct SettingsKey {
     static let lanraragiUrl = "settings:lanraragi:url"
     static let lanraragiApiKey = "settings:lanraragi:apiKey"
     static let serverProgress = "settings:lanraragi:serverProgress"
+    static let lanraragiServers = "settings:lanraragi:servers"
+    static let activeLanraragiServer = "settings:lanraragi:activeServer"
 
     static let tapLeftKey = "settings:read:tap:left"
     static let tapMiddleKey = "settings:read:tap:middle"
@@ -129,6 +131,68 @@ struct SettingsKey {
     static let translationRenderTextDirection = "settings:advanced:translation:renderTextDirection"
     static let translationInpaintingSize = "settings:advanced:translation:inpaintingSize"
     static let translationInpainter = "settings:advanced:translation:inpainter"
+}
+
+struct LANraragiServer: Codable, Equatable, Identifiable, Sendable {
+    let id: UUID
+    var url: String
+    var apiKey: String
+
+    var displayName: String {
+        URL(string: url)?.host ?? url
+    }
+}
+
+enum LANraragiServerStore {
+    static func load() -> [LANraragiServer] {
+        if let data = UserDefaults.standard.data(forKey: SettingsKey.lanraragiServers),
+           let servers = try? JSONDecoder().decode([LANraragiServer].self, from: data) {
+            return servers
+        }
+
+        guard let url = UserDefaults.standard.string(forKey: SettingsKey.lanraragiUrl), !url.isEmpty else {
+            return []
+        }
+
+        let server = LANraragiServer(
+            id: UUID(),
+            url: url,
+            apiKey: UserDefaults.standard.string(forKey: SettingsKey.lanraragiApiKey) ?? ""
+        )
+        save([server])
+        activate(server)
+        return [server]
+    }
+
+    static func save(_ servers: [LANraragiServer]) {
+        guard let data = try? JSONEncoder().encode(servers) else { return }
+        UserDefaults.standard.set(data, forKey: SettingsKey.lanraragiServers)
+    }
+
+    @discardableResult
+    static func upsert(id: UUID?, url: String, apiKey: String) -> LANraragiServer {
+        var servers = load()
+        let server = LANraragiServer(id: id ?? UUID(), url: url, apiKey: apiKey)
+        if let index = servers.firstIndex(where: { $0.id == server.id }) {
+            servers[index] = server
+        } else {
+            servers.append(server)
+        }
+        save(servers)
+        activate(server)
+        return server
+    }
+
+    static func activate(_ server: LANraragiServer) {
+        UserDefaults.standard.set(server.id.uuidString, forKey: SettingsKey.activeLanraragiServer)
+        UserDefaults.standard.set(server.url, forKey: SettingsKey.lanraragiUrl)
+        UserDefaults.standard.set(server.apiKey, forKey: SettingsKey.lanraragiApiKey)
+    }
+
+    static func activeID() -> UUID? {
+        guard let value = UserDefaults.standard.string(forKey: SettingsKey.activeLanraragiServer) else { return nil }
+        return UUID(uuidString: value)
+    }
 }
 
 extension Double {

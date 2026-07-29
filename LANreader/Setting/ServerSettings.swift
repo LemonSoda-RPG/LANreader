@@ -72,7 +72,11 @@ struct ServerListSettingsView: View {
         }
         .overlay {
             if servers.isEmpty {
-                ContentUnavailableView("server.list.empty", systemImage: "server.rack", description: Text("server.list.empty.description"))
+                ContentUnavailableView(
+                    "server.list.empty",
+                    systemImage: "server.rack",
+                    description: Text("server.list.empty.description")
+                )
             }
         }
         .navigationTitle("server.list.title")

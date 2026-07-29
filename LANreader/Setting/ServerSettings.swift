@@ -49,43 +49,49 @@ struct ServerListSettingsView: View {
 
     var body: some View {
         List {
-            ForEach(servers) { server in
-                Button { activate(server) } label: {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(server.displayName).foregroundStyle(.primary)
-                            Text(server.url).font(.footnote).foregroundStyle(.secondary)
-                        }
-                        Spacer()
-                        if server.id == activeID {
-                            Image(systemName: "checkmark.circle.fill").foregroundStyle(.tint)
-                        }
-                    }
+            Section {
+                Button {
+                    openConfig(serverID: nil)
+                } label: {
+                    Label("server.list.add", systemImage: "plus.circle.fill")
                 }
-                .disabled(isActivating || server.id == activeID)
-                .swipeActions {
-                    Button(role: .destructive) { delete(server) } label: {
-                        Label("server.list.delete", systemImage: "trash")
-                    }
-                }
+                .disabled(isActivating)
             }
-        }
-        .overlay {
+
             if servers.isEmpty {
-                ContentUnavailableView(
-                    "server.list.empty",
-                    systemImage: "server.rack",
-                    description: Text("server.list.empty.description")
-                )
+                Section {
+                    ContentUnavailableView(
+                        "server.list.empty",
+                        systemImage: "server.rack",
+                        description: Text("server.list.empty.description")
+                    )
+                }
+            } else {
+                Section {
+                    ForEach(servers) { server in
+                        Button { activate(server) } label: {
+                            HStack {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(server.displayName).foregroundStyle(.primary)
+                                    Text(server.url).font(.footnote).foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                if server.id == activeID {
+                                    Image(systemName: "checkmark.circle.fill").foregroundStyle(.tint)
+                                }
+                            }
+                        }
+                        .disabled(isActivating || server.id == activeID)
+                        .swipeActions {
+                            Button(role: .destructive) { delete(server) } label: {
+                                Label("server.list.delete", systemImage: "trash")
+                            }
+                        }
+                    }
+                }
             }
         }
         .navigationTitle("server.list.title")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button { openConfig(serverID: nil) } label: { Image(systemName: "plus") }
-                    .accessibilityLabel("server.list.add")
-            }
-        }
         .onAppear(perform: reload)
         .alert("error", isPresented: Binding(
             get: { !errorMessage.isEmpty },
@@ -103,6 +109,7 @@ struct ServerListSettingsView: View {
     private func openConfig(serverID: UUID?) {
         var state = LANraragiConfigFeature.State()
         state.serverID = serverID
+        state.isAddingServer = serverID == nil
         let store = Store(initialState: state) { LANraragiConfigFeature() }
         navigation.push(UILANraragiConfigViewController(store: store, navigation: navigation))
     }

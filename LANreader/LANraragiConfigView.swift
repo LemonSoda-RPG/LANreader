@@ -14,6 +14,7 @@ import Logging
         @Shared(.appStorage(SettingsKey.lanraragiApiKey)) var apiKey = ""
 
         var serverID: UUID?
+        var isAddingServer = false
         var formUrl = ""
         var formKey = ""
 
@@ -80,7 +81,10 @@ import Logging
             case .binding:
                 return .none
             case .setFormValue:
-                if let serverID = state.serverID,
+                if state.isAddingServer {
+                    state.formUrl = ""
+                    state.formKey = ""
+                } else if let serverID = state.serverID,
                    let server = LANraragiServerStore.load().first(where: { $0.id == serverID }) {
                     state.formUrl = server.url
                     state.formKey = server.apiKey
